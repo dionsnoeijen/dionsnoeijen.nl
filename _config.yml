@@ -1,0 +1,16 @@
+title: Vegatheist developer
+email: hallo@dionsnoeijen.nl
+description: "Ik ben Dion, veganist, atheist en developer." #
+baseurl: "" # 
+url: "https://www.dionsnoeijen.nl"
+twitter_username: dionsnoeijen
+github_username: dionsnoeijen
+
+# Build settings
+markdown: kramdown
+theme: minima
+gems:
+  - jekyll-feed
+exclude:
+  - Gemfile
+  - Gemfile.lock
