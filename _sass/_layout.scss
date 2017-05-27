@@ -248,3 +248,25 @@ span.sub {
     padding: 10px;
     margin-top: -15px;
 }
+
+.row {
+    margin: 0;
+    padding: 0 0 20px 0;
+    width: 100%;
+
+    .left {
+        float: left;
+        width: 50%;
+        img {
+            margin-right: 4px;
+        }
+    }
+
+    .right {
+        float: right;
+        width: 50%;
+        img {
+            margin-left: 4px;
+        }
+    }
+}
