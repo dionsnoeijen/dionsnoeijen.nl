@@ -7,7 +7,7 @@ comments: true
 author: "Dion"
 ---
 
-[Part 1](https://dionsnoeijen.github.io/ui/dev/2016/08/11/flow-based-user-interface-for-complex-structures-part-1.html "Part 1") was the introduction to this article. Read it if you like a little more background on the subject. Otherwise just skip it and dive in head first.
+[Part 1](https://dionsnoeijen.nl/ui/dev/2016/08/11/flow-based-user-interface-for-complex-structures-part-1.html "Part 1") was the introduction to this article. Read it if you like a little more background on the subject. Otherwise just skip it and dive in head first.
 
 To explore this idea I have for a node or flow based ui for web development I need to define from where I'm reasoning.
 
@@ -76,7 +76,7 @@ Let's wire things up to see what we are getting at.
 ![Wired breadboards](https://s3-eu-west-1.amazonaws.com/dionsnoeijen/nodes/wired-product-admin-boards.PNG)
 
 Ok, we defined fields, grouped them and I have a template (*Product add edit) that produces post data, handled by the P variable attached to the template output. We use this post data to create or update the product. We need a "save" action, that comes equipped with an if block. That way we have the ability to add output on success and on failure. It know's failure or success because the stream of data provides context. It has post data related to the model that also resides in the stream. The model has validation, that's what the outcome is based upon.
- 
+
 On success we render a new page, telling the content editor everything is fine. Also, we drag two lines back to the model date fields. Depending on if this is a new entry, we need a creation date. And if it's an update, we need the updated date. This immediately poses some questions. Mainly, is the date updated after the fact? I think not, the connections to the model should only indicate that we also need to generate one of these dates. The system behind the interpretation of this entanglement should be smart enough to know how to act.
 
 Now, we have a very basic setup on how the data should flow on the administrator side of the application, but we are missing some essential parts. For starters, there's no routing available. And if we have routing, we need a way of authentication and authorization aswel. So let's start with that.
@@ -94,7 +94,7 @@ We probably want to know about the logged in user aswell. To do that we have to 
 ![User model](https://s3-eu-west-1.amazonaws.com/dionsnoeijen/nodes/user-model.PNG)
 
 The user model is connected to a query breadboard, fetching the user if not already present. When unable to fetch the user it will redirect to the login page. Otherwise the information is passed to the template aswel. Making available a lot of useful data we can use in our template. I imagine a twig template, that at this point would have access to the products, user and the request. In a pseudo Json form it might look like something like this.
-    
+
     {
         "products": [
             {
@@ -123,7 +123,7 @@ The user model is connected to a query breadboard, fetching the user if not alre
 <span class="sub">This is much simplified</span>
 
 The other routes for the admin part probably start to make sense on their own now. So I leave it for you to see if you can make something of it. We haven't covered what happends when a user attempts to login but fails. The user may have to create an account. however, I have ideas on how to make that flow more sense using groups like I discussed in the previous article. I will come back to that in the next article. Now it's enough to discuss an over simplified login flow.
- 
+
 If the request comes in and finds itself to need a valid user whilst it hasn't. The user node flows to the User routes. Triggering an action to the login page. The post values are used to query the user table and return to the admin routes on success.
 
 ![User login flow](https://s3-eu-west-1.amazonaws.com/dionsnoeijen/nodes/included-user-flow.PNG)
