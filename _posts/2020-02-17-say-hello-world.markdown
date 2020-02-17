@@ -8,7 +8,7 @@ author: "Dion"
 ---
 
 <div class="larger">
-Finally, I'm ready to talk about some of the real stuff. I really need to know how the ui is going to work. In detail! So I took my design application and think of things I would like to make. How would that work. I will write and think as if it's user documentation. As for all software, I will start with the hello world example.
+Finally, I'm ready to talk about some of the real stuff. I really need to know how the ui is going to work. In detail! So I took my design application and think of things I would like to make. How would it work if it was a real application? I will write and think as if it's user documentation. As for all software, I will start with the hello world example.
 </div>
 
 First I need to explain some of the user interface basics. As for now, it's divided into a couple of regions.
@@ -61,7 +61,7 @@ Selecting the newly added node will have a form appear in the **D** region of th
 </div>
 </div>
 
-This form `(@todo: make ui designs for forms)`. allows extra options for this node to be enabled. First of all, give it a text value: "Hello world!". Now enable the `key` checkbox and give the key a value of `text`.
+This form. allows extra options for this node to be enabled. First of all, give it a text value: "Hello world!". Now enable the `key` checkbox and give the key a value of `text`.
 
 <img style="display:block; margin: 0 auto;" src="https://dionsnoeijen.s3-eu-west-1.amazonaws.com/nodes/hello-world/text-var-node-step-2.png" width="50%" />
 
