@@ -253,6 +253,8 @@ span.sub {
     margin: 0;
     padding: 0 0 20px 0;
     width: 100%;
+    overflow: auto;
+    overflow-x: hidden;
 
     .left {
         float: left;
@@ -269,4 +271,9 @@ span.sub {
             margin-left: 4px;
         }
     }
+}
+
+hr {
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
