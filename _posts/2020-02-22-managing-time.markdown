@@ -9,7 +9,7 @@ author: "Dion"
 ---
 
 <div class="larger">
-I am the worst at managing my time. You see, I don't have a lot if spare time to work on my personal projects. But the time that I have I find hard to manage efficiently! I'm mostly driven by a gut feeling. A surge of inspiration that may last for a time period ranging for an hour, to even a couple weeks. But never enough to bring the project to an end. I already learned some tricks to handle that. But still, I suck at prioritizing. This leaves me with a lot(!) of unfinished projects. In fact, I never finished a significant project. So how do I intend to change that, so my node based programming interface sees the light of day any time in the future?
+I am the worst at managing my time. You see, I don't have a lot if spare time to work on my personal projects. But the time that I have I find hard to manage efficiently! I'm mostly driven by a gut feeling. A surge of inspiration that may last for a time period ranging from one hour, to a couple weeks. But never enough to bring the project to an end. I already learned some tricks to handle that. But still, I suck at prioritizing. This leaves me with a lot(!) of unfinished projects. In fact, I never finished a significant project. So how do I intend to change that, so my node based programming interface sees the light of day any time in the future?
 </div>
 
 ## How much time do I have?
