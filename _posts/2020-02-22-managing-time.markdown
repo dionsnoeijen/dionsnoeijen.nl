@@ -1,6 +1,7 @@
 ---
 layout: post
 title:  "Managing time"
+excerpt: "Having enough time to get things done is an art on itself. Some personal reflections on how I manage and prioritize my time."
 date:   2020-02-22 22:22:22 +0200
 categories: personal
 comments: true

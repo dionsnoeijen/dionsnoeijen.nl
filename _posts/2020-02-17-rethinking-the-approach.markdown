@@ -1,6 +1,7 @@
 ---
 layout: post
 title:  "Rethinking my approach"
+excerpt: "A new no code node based platform is under construction. How am I going to start. What are the basic ideas?"
 date:   2020-02-17 08:00:00 +0200
 categories: concept
 comments: true

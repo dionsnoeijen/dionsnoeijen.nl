@@ -2,6 +2,7 @@
 layout: post
 title:  "Leaving projects behind"
 date:   2020-02-15 12:12:12 +0200
+excerpt: "My first attempt of the node based no code user interface failed. How to continue this project? A new node based no code development platform."
 categories: ui dev
 comments: true
 author: "Dion"

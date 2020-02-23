@@ -9,10 +9,11 @@ github_username: dionsnoeijen
 # Build settings
 markdown: kramdown
 theme: minima
-gems:
+plugins:
   - jekyll-feed
 exclude:
   - Gemfile
   - Gemfile.lock
+  - vendor
 sass:
  style: compressed

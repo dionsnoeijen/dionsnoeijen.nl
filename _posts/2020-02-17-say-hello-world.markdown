@@ -1,6 +1,7 @@
 ---
 layout: post
 title:  "Say hello world"
+excerpt: "How could this node based no code platform for backend web applications work? Let's start with the most basic example."
 date:   2020-02-17 09:00:00 +0200
 categories: concept
 comments: true

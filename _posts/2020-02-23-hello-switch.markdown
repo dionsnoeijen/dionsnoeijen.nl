@@ -1,6 +1,7 @@
 ---
 layout: post
 title:  "Hello switch"
+excerpt: "More in depth on the switch button on the nodes. What is it? Why and how can it work?"
 date:   2020-02-23 14:14:14 +0200
 categories: concept
 comments: true
