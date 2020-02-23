@@ -82,3 +82,5 @@ So, all in all, would this have worked? I'm sure it would! But still, I didn't w
 You see. Gaming may be something that is easily regarded as being benign, or even an infantile waste of time. And to be honest, a lot of times it is. However, there are games that have actually thought me something in a way no great self-help book could have done.
 
 Anyone that made it to the end of a 'souls' game may know what I'm talking about. I see this loss as a boss I didn't yet defeat. But persistence will lead to the win. Just like all bosses in Bloodborne eventually went down, this ui will come into existence. In fact, I'm working hard on my next attempt. In the following posts on this blog I will attempt to describe the journey. Maybe I will see you along the journey sometime! Thank you for reading!
+
+{% include concept-footnote.html %}

@@ -199,3 +199,5 @@ Now we can connect the request node to the group and the group to the response n
 ### Conclusion
 
 This document has shown the most basic functionality of the node system. But there's a lot more required to make this into the powerhouse it's supposed to be. Next week there will be more.
+
+{% include concept-footnote.html %}

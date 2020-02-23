@@ -8,7 +8,7 @@ author: "Dion"
 ---
 
 <div class="larger">
-So, in my [last post](https://dionsnoeijen.nl/ui/dev/2020/02/15/leaving-projects-behind.html "last post") I describe how my first attempt failed. But I'm not done yet.
+So, in my <a href="https://dionsnoeijen.nl/ui/dev/2020/02/15/leaving-projects-behind.html">last post</a> I describe how my first attempt failed. But I'm not done yet.
 </div>
 
 I have taken some time to rethink what I'm doing. First of all, there needs be be a bigger plan. I mean, when I zoom out a little, and think about the concept itself. How is this thing even going to work at all?
@@ -55,3 +55,5 @@ Say it will be a saas platform, how to host? And if not, which is most likely go
 This brings me to another point. This thing has the potency to explode right in my face when it comes to the amount of work. Honestly I don't even know if it's reasonable to keep at it by myself. But as for now, there really is no other option. I will have to make sure not to implement every little feature I can think of. In fact, I should not even try to work towards a real working mvp at first. The first thing I will go for, is a small promo movie, tho show what it should do. I may fake some things, just for the movie. But that's fine. That way I will finally be able to really show what it's supposed to do!
 
 Thanks for reading this far! The next post will really go into detail about the concept!
+
+{% include concept-footnote.html %}
