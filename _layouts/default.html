@@ -3,18 +3,16 @@
 
   {% include head.html %}
 
-  <body>
+  <body class="{{ layout.body_class }}">
 
     {% include header.html %}
 
     <div class="page-content">
       <div class="wrapper">
         {{ content }}
-
         {% if page.comments == true %}
         <div id="disqus_thread"></div>
         <script>
-
           /**
            *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
            *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables */
@@ -35,9 +33,6 @@
         {% endif %}
       </div>
     </div>
-
     {% include footer.html %}
-
   </body>
-
 </html>
