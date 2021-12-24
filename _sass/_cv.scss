@@ -1,29 +1,128 @@
+$white: #daebfc;
+$blue: #445b76;
+$black: darken(#445b76, 30);
+$subWhite: lighten($blue, 30);
+
 body.cv {
+  nav {
+    a.page-link {
+      color: $white;
+    }
+  }
+  .site-header {
+    .site-title {
+      color: $white;
+    }
+    border-bottom: .1px dotted $subWhite;
+  }
+  .site-footer {
+    border-top: .1px dotted $subWhite;
+    .footer-col {
+      color: $white;
+    }
+  }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  a {
+    color: $white;
+    &:hover {
+      color: $white;
+    }
+  }
+  background-color: $black;
+  color: $white;
   hr {
-    border: .4px solid grey;
+    border: .1px solid $subWhite;
   }
   div.layout {
     display: grid;
     grid-template-columns: repeat(12, 1fr);
     grid-gap: 1rem;
     div.left {
+      color: white;
+      h2 {
+        display: block;
+        color: $white;
+        padding: 1rem 1rem 0 1rem;
+        margin: 1rem -1rem;
+      }
       grid-column: span 4;
+      @media screen and (max-width: 600px) {
+        grid-column: span 12;
+      }
+      position: relative;
+      canvas {
+        position: absolute;
+        top: -30px;
+        left: 0;
+        z-index: 1;
+      }
       img.me {
+        position: relative;
         border-radius: 50%;
-        width: 60%;
-        margin: 0 20% 5% 20%;
+        width: 70%;
+        margin: 6% 15% 5% 15%;
+        z-index: 2;
+        box-sizing: border-box;
+        border: .5rem solid $black;
+      }
+      ul.clean {
+        margin: 0 0 1rem 0;
+        padding: 0;
+        font-size: 0;
+        color: white;
+        > li {
+          img {
+            margin-right: .4rem;
+            filter: invert(1);
+          }
+          a {
+            color: white;
+          }
+          font-size: 1rem;
+          display: block;
+          margin-bottom: .3rem;
+        }
+      }
+      ul.skills {
+        margin: 0 0 0 -.15rem;
+        padding: 0;
+        font-size: 0;
+        > li {
+          a {
+            color: white;
+          }
+          text-decoration: none;
+          display: inline-block;
+          padding: .3rem;
+          font-size: .8rem;
+          line-height: .8rem;
+          background: $blue;
+          margin: 0 .15rem .3rem .15rem;
+          border-radius: .2rem;
+          color: white;
+        }
       }
     }
     div.right {
       grid-column: span 8;
+      @media screen and (max-width: 600px) {
+        grid-column: span 12;
+      }
       div.experience {
-        border-bottom: 1px solid grey;
+        border-bottom: .1px dotted $subWhite;
         margin-bottom: 1rem;
         padding-bottom: 1rem;
         &--heading {
           display: grid;
           grid-template-columns: repeat(3, 1fr);
           grid-gap: 1rem;
+          h2, h3, h4, h5 {
+            align-self: baseline;
+          }
         }
         ul {
           margin: 0 0 0 -.15rem;
@@ -35,7 +134,7 @@ body.cv {
             padding: .3rem;
             font-size: .8rem;
             line-height: .8rem;
-            background: #2a7ae2;
+            background: $blue;
             margin: 0 .15rem .3rem .15rem;
             border-radius: .2rem;
             color: white;
