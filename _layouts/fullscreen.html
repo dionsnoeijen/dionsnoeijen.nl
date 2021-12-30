@@ -1,0 +1,649 @@
+<!doctype html>
+<html>
+    <head>
+        <title>{{ page.title }}</title>
+        <style>
+            body, html {
+                margin: 0;
+                padding: 0;
+                width: 100%;
+                height: 100%;
+                background-color: #000000;
+            }
+
+            canvas {
+                display: block;
+                background-color: #000000;
+            }
+        </style>
+    </head>
+    <body>
+        <canvas id="canvas"></canvas>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.6.5/dat.gui.js" type="text/javascript"></script>
+        <script>
+            'use strict';
+
+            // --------------------
+            // Init
+            // --------------------
+
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            const canvas = document.getElementById('canvas');
+            const context = canvas.getContext('2d');
+
+            context.globalCompositeOperation = 'multiply';
+
+            const setCanvasWidth = () => {
+                // Retina display
+                if (window.devicePixelRatio > 1) {
+                    canvas.width = width*2;
+                    canvas.height = height*2;
+                } else {
+                    canvas.width = width;
+                    canvas.height = height;
+                }
+                canvas.style.width = `${width}px`;
+                canvas.style.height = `${height}px`;
+            };
+            setCanvasWidth();
+            window.addEventListener('resize', setCanvasWidth);
+
+            const documentReady = callback => {
+                if (document.readyState === 'complete' ||
+                    ( document.readyState !== 'loading' && !document.documentElement.doScroll )
+                ) {
+                    callback();
+                } else {
+                    document.addEventListener('DOMContentLoaded', callback);
+                }
+            };
+
+            // --------------------
+            // Drawing
+            // --------------------
+
+            class Clear {
+
+                constructor() {
+                    this.trailing = .4;
+                }
+
+                update() {
+                    context.fillStyle = 'rgba(0, 0, 0, ' + this.trailing + ')';
+                    context.fillRect(0, 0, canvas.width, canvas.height);
+                    context.fill();
+                };
+            }
+
+            function Vector(x, y, z) {
+
+                this.x = x;
+                this.y = y;
+                this.z = z === undefined ? 0 : z;
+
+                this.add = function(v) {
+
+                    this.x += v.x;
+                    this.y += v.y;
+                    this.z += v.z;
+
+                    return this;
+                };
+
+                this.addX = function(n) {
+                    this.x += n;
+
+                    return this;
+                };
+
+                this.addY = function(n) {
+                    this.y += n;
+
+                    return this;
+                };
+
+                this.addZ = function(n) {
+                    this.z += n;
+
+                    return this;
+                };
+
+                this.subtract = function(v) {
+                    this.x -= v.x;
+                    this.y -= v.y;
+                    this.z -= v.z;
+
+                    return this;
+                };
+
+                this.subtractX = function(n) {
+                    this.x -= n;
+
+                    return this;
+                };
+
+                this.subtractY = function(n) {
+                    this.y -= n;
+
+                    return this;
+                };
+
+                this.subtractZ = function(n) {
+                    this.z -= n;
+
+                    return this;
+                };
+
+                this.multiply = function(n) {
+
+                    this.x *= n;
+                    this.y *= n;
+                    this.z *= n;
+
+                    return this;
+                };
+
+                this.multiplyX = function(n) {
+                    this.x *= n;
+
+                    return this;
+                };
+
+                this.multiplyY = function(n) {
+                    this.y *= n;
+
+                    return this;
+                };
+
+                this.multiplyZ = function(n) {
+                    this.z *= z;
+
+                    return this;
+                };
+
+                this.divide = function(n) {
+
+                    this.x /= n;
+                    this.y /= n;
+                    this.z /= n;
+
+                    return this;
+                };
+
+                this.magnitude = function() {
+
+                    return Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
+                };
+
+                this.normalize = function() {
+                    var m = this.magnitude();
+                    if (m !== 0) {
+                        this.divide(m);
+                    }
+                };
+
+                this.limit = function(n) {
+
+                    if (this.magnitude() > n) {
+                        this.normalize();
+                        this.multiply(n);
+                    }
+                };
+
+                this.distance = function(v) {
+
+                    var dx = this.x - v.x,
+                        dy = this.y - v.y,
+                        dz = this.z - v.z;
+
+                    return Math.sqrt(dx * dx + dy * dy + dz * dz);
+                };
+
+                this.invert = function() {
+
+                    this.x *= -1;
+                    this.y *= -1;
+                    this.z *= -1;
+
+                    return this;
+                };
+
+                this.inverseX = function() {
+
+                    this.x *= -1;
+
+                    return this;
+                };
+
+                this.inverseY = function() {
+
+                    this.y *= -1;
+
+                    return this;
+                };
+
+                this.inverseZ = function() {
+
+                    this.z *= -1;
+
+                    return this;
+                };
+
+                this.get = function() {
+
+                    return new Vector(this.x, this.y, this.z);
+                };
+
+                this.dot = function(v) {
+
+                    return this.x * v.x + this.y * v.y + this.z * v.z;
+                };
+            }
+
+            // -------------------------
+            // Vector: Static
+            // -------------------------
+
+            Vector.add = function(v1, v2) {
+
+                var v3 = new Vector(v1.x + v2.x, v1.y + v2.y, v1.z + v2.z);
+
+                return v3;
+            };
+
+            Vector.subtract = function(v1, v2) {
+
+                var v3 = new Vector(v1.x - v2.x, v1.y - v2.y, v1.z - v2.z);
+
+                return v3;
+            };
+
+            Vector.multiply = function(v1, v2) {
+
+                var v3 = new Vector(v1.x * v2.x, v1.y * v2.y, v1.z * v2.z);
+
+                return v3;
+            };
+
+            Vector.divide = function(v1, v2) {
+
+                if (typeof v2 === Vector) {
+                    var v3 = new Vector(v1.x / v2.x, v1.y / v2.y, v1.z / v2.z);
+                } else {
+                    var v3 = new Vector(v1.x / v2, v1.y / v2, v1.z / v2);
+                }
+
+                return v3;
+            };
+
+            Vector.distance = function(v1, v2) {
+
+                return v1.distance(v2);
+            };
+
+            Vector.copy = function(v) {
+                return new Vector(v.x, v.y, v.z);
+            };
+
+            Vector.random2D = function() {
+
+                var x = parseInt((Math.random() * 3)) -1;
+                var y = parseInt((Math.random() * 3)) -1;
+                var z = parseInt((Math.random() * 2)) -1;
+
+                var v1 = new Vector(x, y, z);
+                return v1;
+            };
+
+            // -------------------------
+            // Color my world
+            // -------------------------
+
+            class Color {
+
+                constructor(increment) {
+                    this.color = {r:0,g:0,b:0,a:1};
+                    this.angle = 0;
+                    this.colorIncrement = increment;
+                    this.alphaBaseValue = .5;
+                    this.baseValue = 256 / 2;
+                }
+
+                update() {
+
+                    this.color.r = this.baseValue + Math.floor(Math.sin(this.angle) * this.baseValue);
+                    this.color.g = this.baseValue + Math.floor(Math.cos(this.angle) * this.baseValue);
+                    this.color.b = this.baseValue + Math.floor(Math.tan(this.angle) * this.baseValue);
+                    // this.color.a = this.alphaBaseValue + (Math.sin(this.angle / 5) * this.alphaBaseValue);
+
+                    this.angle += this.colorIncrement;
+
+                    return 'rgba(' + this.color.r + ',' + this.color.g + ',' + this.color.b + ',' + this.color.a + ')';
+                }
+
+                static create(increment = .1) {
+                    return new Color(increment);
+                }
+
+            }
+
+            'use strict';
+
+            class Pattern {
+
+                constructor(position, width, height, color) {
+
+                    this.initialPosition = Vector.copy(position);
+
+                    this.position = position;
+                    this.width = width;
+                    this.height = height;
+                    this.counter = 0;
+                    this.color = color;
+
+                    this.speed = .02;
+                    this.lineDensity = .1;
+                    this.lineElementLength = 0;
+                    this.crazySinAmount = 0;
+                    this.crazyCosAmount = 0;
+                    this.crazySinAmplitude = 2;
+                    this.crazyCosAmplitude = 2;
+                    this.depthX = 2;
+                    this.depthY = 2;
+                    this.spiralHeight = 0;
+                    this.spiralDensity = 10;
+                    this.lineWidth = .2;
+                }
+
+                update() {
+                    this.position = Vector.add(this.initialPosition, new Vector(0, (this.spiralHeight * 30)));
+                    this.draw();
+                    this.counter += this.speed;
+                }
+
+                draw() {
+
+                    for (let i = this.lineDensity ; i < Math.PI * this.spiralDensity ; i += this.lineDensity) {
+
+                        context.beginPath();
+                        context.strokeStyle = this.color.update();
+                        context.lineWidth = this.lineWidth;
+                        context.lineJoin = 'round';
+
+                        let crazySin = this.crazySinAmount * (Math.sin(this.counter) * this.crazySinAmplitude);
+                        let crazyCos = this.crazyCosAmount * (Math.cos(this.counter) * this.crazyCosAmplitude);
+
+                        let moveToX =
+                            this.position.x +
+                            (
+                                (
+                                    Math.sin(
+                                        crazySin + this.counter +
+                                        (
+                                            i - ( this.lineDensity + this.lineElementLength )
+                                        )
+                                    ) *
+                                    (
+                                        ( (this.width / 2) - i * this.depthX ) -
+                                        ( i - ( this.lineDensity + this.lineElementLength ) )
+                                    )
+                                )
+                            );
+
+                        let moveToY =
+                            (
+                                this.position.y - (
+                                    (
+                                        i - ( this.lineDensity + this.lineElementLength )
+                                    ) * this.spiralHeight
+                                )
+                            ) +
+                            (
+                                (
+                                    Math.cos(
+                                        crazyCos + this.counter +
+                                        ( i - ( this.lineDensity + this.lineElementLength ) )
+                                    ) *
+                                    (
+                                        ( this.height / 2 ) - ( i * this.depthY )
+                                    )
+                                )
+                            );
+
+                        let lineToX =
+                            this.position.x +
+                            (
+                                (
+                                    Math.sin(
+                                        crazyCos + this.counter + i
+                                    ) *
+                                    ( (this.width / 2 - i) - ( i * this.depthX ) )
+                                )
+                            );
+
+                        let lineToY =
+                            (
+                                this.position.y -
+                                ( i * this.spiralHeight )
+                            ) +
+                            (
+                                (
+                                    Math.cos(
+                                        crazySin + this.counter + i
+                                    ) *
+                                    ( ( this.height / 2 ) - ( i * this.depthY ) )
+                                )
+                            );
+
+                        context.moveTo(moveToX, moveToY);
+                        context.lineTo(lineToX, lineToY);
+                        context.stroke();
+                    }
+                }
+
+            }
+            'use strict';
+
+            function Stage() {
+
+                let clear = new Clear();
+                let color = Color.create();
+                let pattern = new Pattern(new Vector(canvas.width / 2, canvas.height / 2), 400, 400, color);
+
+                let gui = new dat.GUI({
+                        load: {
+                            "preset": "Default",
+                            "closed": false,
+                            "remembered": {
+                                "Default": {
+                                    "0": {
+                                        "width": 400,
+                                        "height": 400,
+                                        "speed": .02,
+                                        "lineDensity": .1,
+                                        "lineElementLength": 0,
+                                        "crazySinAmount": 0,
+                                        "crazyCosAmount": 0,
+                                        "lineWidth": .2,
+                                        "crazySinAmplitude": 2,
+                                        "crazyCosAmplitude": 2,
+                                        "depthX": 2,
+                                        "depthY": 2,
+                                        "spiralHeight": 0,
+                                        "spiralDensity": 10
+                                    },
+                                    "1": {
+                                        "trailing": .4,
+                                    },
+                                    "2": {
+                                        "colorIncrement": .1
+                                    }
+                                },
+                                "Elegant": {
+                                    "0": {
+                                        "width": 300,
+                                        "height": 400,
+                                        "speed": .02,
+                                        "lineDensity": .1,
+                                        "lineElementLength": 2,
+                                        "crazySinAmount": 0,
+                                        "crazyCosAmount": 1,
+                                        "lineWidth": .2,
+                                        "crazySinAmplitude": 1.1,
+                                        "crazyCosAmplitude": 2,
+                                        "depthX": -3.1,
+                                        "depthY": 6,
+                                        "spiralHeight": 0,
+                                        "spiralDensity": 10
+                                    },
+                                    "1": {
+                                        "trailing": .4
+                                    },
+                                    "2": {
+                                        "colorIncrement": .1
+                                    }
+                                },
+                                "Massive": {
+                                    "0": {
+                                        "width": -29,
+                                        "height": 400,
+                                        "speed": 0.013,
+                                        "lineDensity": 0.01,
+                                        "lineElementLength": 0,
+                                        "crazySinAmount": 1,
+                                        "crazyCosAmount": 1,
+                                        "lineWidth": 10,
+                                        "crazySinAmplitude": 2,
+                                        "crazyCosAmplitude": 2,
+                                        "depthX": 4.7,
+                                        "depthY": 6.2,
+                                        "spiralHeight": 0,
+                                        "spiralDensity": 10
+                                    },
+                                    "1": {
+                                        "trailing": 0.4
+                                    },
+                                    "2": {
+                                        "colorIncrement": 0.1
+                                    }
+                                },
+                                "Soap": {
+                                    "0": {
+                                        "width": 578,
+                                        "height": 400,
+                                        "speed": 0.04,
+                                        "lineDensity": 0.01,
+                                        "lineElementLength": 0,
+                                        "crazySinAmount": 1,
+                                        "crazyCosAmount": 1,
+                                        "lineWidth": 0.1,
+                                        "crazySinAmplitude": 2,
+                                        "crazyCosAmplitude": 2,
+                                        "depthX": 1,
+                                        "depthY": 8.8,
+                                        "spiralHeight": -6,
+                                        "spiralDensity": 18
+                                    },
+                                    "1": {
+                                        "trailing": 0.77
+                                    },
+                                    "2": {
+                                        "colorIncrement": 0.09
+                                    }
+                                },
+                                "Abstract": {
+                                    "0": {
+                                        "width": 400,
+                                        "height": 400,
+                                        "speed": 0.02,
+                                        "lineDensity": 0.27,
+                                        "lineElementLength": 2,
+                                        "crazySinAmount": 2,
+                                        "crazyCosAmount": 0,
+                                        "lineWidth": 0.3,
+                                        "crazySinAmplitude": 2,
+                                        "crazyCosAmplitude": 2,
+                                        "depthX": -4.6,
+                                        "depthY": 10,
+                                        "spiralHeight": 0,
+                                        "spiralDensity": 10
+                                    },
+                                    "1": {
+                                        "trailing": 0.2
+                                    },
+                                    "2": {
+                                        "colorIncrement": 0.11
+                                    }
+                                },
+                                "Atom": {
+                                    "0": {
+                                        "width": -353.7679932260795,
+                                        "height": 36.40982218458953,
+                                        "speed": 0.013,
+                                        "lineDensity": 0.01,
+                                        "lineElementLength": 5,
+                                        "crazySinAmount": 1,
+                                        "crazyCosAmount": 1,
+                                        "lineWidth": 0.1,
+                                        "crazySinAmplitude": 2,
+                                        "crazyCosAmplitude": 2,
+                                        "depthX": 4.7,
+                                        "depthY": -9.607112616426758,
+                                        "spiralHeight": 0,
+                                        "spiralDensity": 10
+                                    },
+                                    "1": {
+                                        "trailing": 0.14970364098221847
+                                    },
+                                    "2": {
+                                        "colorIncrement": 0.026079593564775613
+                                    }
+                                }
+                            },
+                            "folders": {}
+                        }
+                    }
+                );
+                gui.add(pattern, 'width', -10000, 10000);
+                gui.add(pattern, 'height', -10000, 10000);
+                gui.add(pattern, 'speed', .001, .04);
+                gui.add(pattern, 'lineDensity', .01, .5);
+                gui.add(pattern, 'lineElementLength', 0, 5);
+                gui.add(pattern, 'crazySinAmount', 0, 2);
+                gui.add(pattern, 'crazyCosAmount', 0, 2);
+                gui.add(pattern, 'lineWidth', .1, 10);
+                gui.add(pattern, 'crazySinAmplitude', 0, 10);
+                gui.add(pattern, 'crazyCosAmplitude', 0, 10);
+                gui.add(pattern, 'depthX', -10, 10);
+                gui.add(pattern, 'depthY', -10, 10);
+                gui.add(pattern, 'spiralHeight', -20, 20);
+                gui.add(pattern, 'spiralDensity', 0, 30);
+                gui.add(clear, 'trailing', 0, 1);
+                gui.add(color, 'colorIncrement', 0, .5);
+                gui.add({
+                    save: () => {
+                        window.open(canvas.toDataURL('image/png'));
+                    }
+                }, 'save');
+                gui.remember(pattern);
+                gui.remember(clear);
+                gui.remember(color);
+
+                let animate = function() {
+                    clear.update();
+
+                    pattern.update();
+
+                    requestAnimationFrame(animate);
+                }.bind(this);
+
+                animate();
+            }
+
+            documentReady(() => {
+                new Stage();
+            })
+        </script>
+    </body>
+</html>
